@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Header from './components/Header/Header.vue'
+import store from './vuex/store'
 
 Vue.config.productionTip = false
 
@@ -15,4 +16,5 @@ new Vue({
   components: { App },
   template: '<App/>',
   router, // 配置路由器
+  store, // 配置vuex的store
 })

@@ -7,13 +7,12 @@
 
 <script type="text/ecmascript-6">
   import FooterGuide from './components/FooterGuide/FooterGuide'
-  import {reqAddress} from './api'
   export default {
     name: 'App',
 
-    async mounted () {
-      const result = await reqAddress('116.36867', '40.10038')
-      console.log('result', result)
+    mounted () {
+      // 异步获取地址
+      this.$store.dispatch('getAddress')
     },
 
     components: {
