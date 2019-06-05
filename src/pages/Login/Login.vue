@@ -12,12 +12,17 @@
         <form>
           <div :class="{on: loginWay}">
             <section class="login_message">
-              <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
-              <button :disabled="!isRightPhone" class="get_verification" 
-              :class="{right_phone_number: isRightPhone}" @click.prevent="sendCode">获取验证码</button>
+              <input type="tel" maxlength="11" placeholder="手机号" name="phone" 
+              v-model="phone" v-validate="'required|mobile'">
+              <!-- v-model="phone" v-validate="{required: true,regex: /^1\d{10}$/}" -->
+              <button :disabled="!isRightPhone || computeTime>0" class="get_verification" 
+              :class="{right_phone_number: isRightPhone}" @click.prevent="sendCode">
+              {{computeTime>0 ? `验证码已发送(${computeTime}s)` : '获取验证码'}}
+              </button>
+              <span style="color: red;" v-show="errors.has('phone')">{{ errors.first('phone') }}</span>
             </section>
             <section class="login_verification">
-              <input type="tel" maxlength="8" placeholder="验证码">
+              <input type="tel" maxlength="8" placeholder="验证码" name="code" v-model="code">
             </section>
             <section class="login_hint">
               温馨提示：未注册硅谷外卖帐号的手机号，登录时将自动注册，且代表已同意
@@ -27,22 +32,24 @@
           <div :class="{on: !loginWay}">
             <section>
               <section class="login_message">
-                <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
+                <input type="text" maxlength="11" placeholder="用户名" 
+                name="name" v-model="name" v-validate="'required'">
+                <span v-show="errors.has('name')" style="color: red">{{ errors.first('name') }}</span>
               </section>
               <section class="login_verification">
-                <input type="tel" maxlength="8" placeholder="密码">
-                <div class="switch_button off">
-                  <div class="switch_circle"></div>
-                  <span class="switch_text">...</span>
+                <input :type="isShowPwd ? 'text' : 'password'" maxlength="8" placeholder="密码" name="pwd" v-model="pwd">
+                <div class="switch_button" :class="isShowPwd ? 'on' : 'off'" @click="isShowPwd = !isShowPwd">
+                  <div class="switch_circle" :class="{right: isShowPwd}"></div>
+                  <span class="switch_text">{{isShowPwd ? 'abc' : ''}}</span>
                 </div>
               </section>
               <section class="login_message">
-                <input type="text" maxlength="11" placeholder="验证码">
+                <input type="text" maxlength="11" placeholder="验证码" name="captcha" v-model="captcha">
                 <img class="get_verification" src="./images/captcha.svg" alt="captcha">
               </section>
             </section>
           </div>
-          <button class="login_submit">登录</button>
+          <button class="login_submit" @click.prevent="login">登录</button>
         </form>
         <a href="javascript:;" class="about_us">关于我们</a>
       </div>
@@ -54,11 +61,19 @@
 </template>
 
 <script type="text/ecmascript-6">
+import { clearInterval } from 'timers';
   export default {
     data () {
       return {
-        loginWay: true, // true: 短信登陆, false: 密码登陆
+        loginWay: false, // true: 短信登陆, false: 密码登陆
         phone: '', // 手机号
+        code: '', // 一性短信验证码
+        name: '', // 用户名
+        pwd: '', // 密码
+        captcha: '', // 一次性图形验证码
+        computeTime: 0, // 计时剩余时间
+        isShowPwd: false, // 是否显示密码
+
       }
     },
 
@@ -71,9 +86,36 @@
 
     methods: {
       sendCode () {
-        alert('----')
+        // 显示最大值
+        this.computeTime = 10
+        // 启动循环计时器, 每隔1s减1
+        const intervalId = window.setInterval(() => {
+          console.log('--------')
+          this.computeTime--
+          if (this.computeTime<=0) {
+            // 停止计时
+            window.clearInterval(intervalId)
+          }
+        }, 1000);
+      },
+
+      async login () {
+        const {loginWay} = this
+        let names
+        if (loginWay) {
+          names = ['phone']
+        } else {
+          names = ['name']
+        }
+        
+        // 进行统一的前台表单验证
+        const success = await this.$validator.validateAll(names)
+        // 验证通过后发ajax请求
+        if (success) {
+          alert('验证通过, 发ajax请求')
+        }
       }
-    }
+    },
   }
 </script>
 
@@ -179,6 +221,8 @@
                   background #fff
                   box-shadow 0 2px 4px 0 rgba(0,0,0,.1)
                   transition transform .3s
+                  &.right
+                    transform translateX(27px)
             .login_hint
               margin-top 12px
               color #999
