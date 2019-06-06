@@ -172,3 +172,23 @@
     	目标: 关闭浏览器, 再打开还是同一个会话?
     		让connect.sid的cookie设置成为一个持久化cookie
 
+## 关于json
+    json数据: 具有特定格式的字符串
+    格式/结构: 
+        1. 整体: {} json对象 / [] json数组
+        2. json对象内部: {key1:value1, key2:value2}
+        3. json数组内部: [value1, value2]
+        4. key: 字符串(必须使用双引号包起来)
+        5. value: 字符串/布尔/数值/json对象/json数组
+    json的组成
+        结构: 类型 / 名称
+        值
+    设计json数据
+    mock数据与真实数据的关系: 结构不要变, 值可以变
+
+    json与js的关系
+        json本身是一个js字符串
+        json对象 <----> js对象
+        json数组 <----> js数组
+        js对象/数组 = JSON.parse(json对象/数组)
+        json对象/数组 = JSON.stringfy(js对象/数组)
