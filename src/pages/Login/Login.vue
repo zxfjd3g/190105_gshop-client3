@@ -53,7 +53,7 @@
         </form>
         <a href="javascript:;" class="about_us">关于我们</a>
       </div>
-      <a href="javascript:" class="go_back">
+      <a href="javascript:" class="go_back" @click="$router.back()">
         <i class="iconfont icon-jiantou2"></i>
       </a>
     </div>
@@ -62,7 +62,8 @@
 
 <script type="text/ecmascript-6">
   import { setInterval, clearInterval } from 'timers'
-  import {reqSendCode} from '../../api'
+  import {reqSendCode, reqSmsLogin, reqPwdLogin} from '../../api'
+  import {RECEIVE_USER} from '../../vuex/mutation-types'
   
   export default {
     data () {
@@ -111,8 +112,11 @@
         }
       },
 
+      /* 
+      登陆
+      */
       async login () {
-        const {loginWay} = this
+        const {loginWay, phone, code, name, pwd, captcha} = this
         let names
         if (loginWay) {
           names = ['phone']
@@ -124,7 +128,25 @@
         const success = await this.$validator.validateAll(names)
         // 验证通过后发ajax请求
         if (success) {
-          alert('验证通过, 发ajax请求')
+          let result
+          // alert('验证通过, 发ajax请求')
+          if (loginWay) {
+             result = await reqSmsLogin(phone, code)
+          } else {
+            result = await reqPwdLogin({name, pwd, captcha})
+          }
+
+          // 根据请求的结果进行处理
+          if (result.code===0) { // 登陆成功
+            const user = result.data
+            // 保存user
+            this.$store.commit(RECEIVE_USER, user)
+            // 跳转到个人中心
+            this.$router.replace('/profile')
+          } else { // 登陆失败
+            alert(result.msg)
+          }
+         
         }
       },
 

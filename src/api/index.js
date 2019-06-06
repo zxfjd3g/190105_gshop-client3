@@ -21,3 +21,9 @@ export const reqBaiduXxx = () => ajax('/baidu/xxx')
 
 // 4. 发送短信验证码
 export const reqSendCode = (phone) => ajax(BASE + '/sendcode', {phone})
+
+// 5. 手机号/验证码登陆
+export const reqSmsLogin = (phone, code) => ajax(BASE + '/login_sms', {phone, code}, 'POST')
+
+// 6. 用户名/密码/验证码登陆
+export const reqPwdLogin = ({name, pwd, captcha}) => ajax(BASE + '/login_pwd', {name, pwd, captcha}, 'POST')
