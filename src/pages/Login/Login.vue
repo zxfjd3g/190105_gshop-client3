@@ -45,7 +45,7 @@
               </section>
               <section class="login_message">
                 <input type="text" maxlength="11" placeholder="验证码" name="captcha" v-model="captcha">
-                <img class="get_verification" src="./images/captcha.svg" alt="captcha">
+                <img ref="captcha" class="get_verification" src="http://localhost:5000/captcha" alt="captcha" @click="updateCaptcha">
               </section>
             </section>
           </div>
@@ -61,7 +61,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { setInterval, clearInterval } from 'timers';
+  import { setInterval, clearInterval } from 'timers'
+  import {reqSendCode} from '../../api'
+  
   export default {
     data () {
       return {
@@ -85,19 +87,28 @@
     },
 
     methods: {
-      sendCode () {
+      async sendCode () {
         // 显示最大值
         this.computeTime = 10
         // 启动循环计时器, 每隔1s减1
         const intervalId = setInterval(() => {
-          console.log('--------')
           this.computeTime--
           if (this.computeTime<=0) {
+            this.computeTime = 0
             // 停止计时
             clearInterval(intervalId)
           }
         }, 1000);
-        console.log('intervalId', intervalId)
+
+        // 请求发送验证码
+        const result = await reqSendCode(this.phone)
+        if (result.code===0) {
+          alert('短信发送成功')
+        } else {
+          // 停止计时
+          this.computeTime = 0
+          alert(result.msg)
+        }
       },
 
       async login () {
@@ -115,7 +126,15 @@
         if (success) {
           alert('验证通过, 发ajax请求')
         }
-      }
+      },
+
+      /* 
+      更新图形验证码
+      */
+     updateCaptcha () {
+       // 给img指定一个新的src路径值, 携带一个时间戳参数
+       this.$refs.captcha.src = 'http://localhost:5000/captcha?time=' + Date.now()
+     }
     },
   }
 </script>

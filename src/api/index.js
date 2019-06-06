@@ -18,3 +18,6 @@ export const reqShops = (longitude, latitude) => ajax(BASE + '/shops', {latitude
 
 // 请求百度的某个接口: /xxx
 export const reqBaiduXxx = () => ajax('/baidu/xxx')
+
+// 4. 发送短信验证码
+export const reqSendCode = (phone) => ajax(BASE + '/sendcode', {phone})
