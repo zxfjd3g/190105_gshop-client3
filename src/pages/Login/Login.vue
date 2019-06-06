@@ -61,7 +61,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { clearInterval } from 'timers';
+  import { setInterval, clearInterval } from 'timers';
   export default {
     data () {
       return {
@@ -89,14 +89,15 @@ import { clearInterval } from 'timers';
         // 显示最大值
         this.computeTime = 10
         // 启动循环计时器, 每隔1s减1
-        const intervalId = window.setInterval(() => {
+        const intervalId = setInterval(() => {
           console.log('--------')
           this.computeTime--
           if (this.computeTime<=0) {
             // 停止计时
-            window.clearInterval(intervalId)
+            clearInterval(intervalId)
           }
         }, 1000);
+        console.log('intervalId', intervalId)
       },
 
       async login () {

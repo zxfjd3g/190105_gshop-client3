@@ -52,6 +52,8 @@
 # day02
 ## 1. 使用vue-cli3
     1). 创建项目
+        npm remove vue-cli -g
+        yarn global remove vue-cli
         yarn global add @vue/cli
         vue create gshop-client3
     2). 打包运行
@@ -118,8 +120,8 @@
     使用组件标签, 并传入相应的标签属性
     完成组件编码: 使用计算属性
     
-### 5. 纯前台交互效果
-    1). 切换登陆方式: isShowSms
+### 5. Login组件: 纯前台交互效果
+    1). 切换登陆方式: loginWay
     2). 手机号验证: right_phone_number + isRightPhone计算属性
     3). 倒计时效果: computeTime + setInterval()
     4). 密码显示/隐藏的切换: isShowPwd + transition

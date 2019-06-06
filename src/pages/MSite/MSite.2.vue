@@ -41,20 +41,26 @@
   export default {
     name: 'MSite',
 
-    async mounted () {
+    mounted () {
 
       // 异步获取shops数据
       this.$store.dispatch('getShops')
-      // dispatch返回的promise对象什么时候才成功?  数据更新且界面更新之后
-      const result = await this.$store.dispatch('getCategorys')
-      console.log('result', result) // promise的excutor中调用resolve()
-      new Swiper('.swiper-container', {
-        loop: true, // 循环模式选项
-        // 如果需要分页器
-        pagination: {
-          el: '.swiper-pagination',
-        },
+      this.$store.dispatch('getCategorys', () => {
+        // 创建Swiper对象的时机: 必须在列表页面显示之后
+        /* eslint-disable no-new */
+        // 将回调延迟到下次 DOM 更新循环之后执行。在修改数据之后立即使用它，然后等待 DOM 更新
+        this.$nextTick(() => {
+          new Swiper('.swiper-container', {
+            loop: true, // 循环模式选项
+            // 如果需要分页器
+            pagination: {
+              el: '.swiper-pagination',
+            },
+          })
+        })
       })
+
+      
     },
 
     computed: {
