@@ -4,13 +4,15 @@
 import {
   reqAddress,
   reqCategorys,
-  reqShops
+  reqShops,
+  reqLogout
 } from '../api'
 
 import {
   RECEIVE_ADDRESS,
   RECEIVE_CATEGORYS,
-  RECEIVE_SHOPS
+  RECEIVE_SHOPS,
+  RESET_USER
 } from './mutation-types'
 
 export default {
@@ -58,4 +60,16 @@ export default {
       commit(RECEIVE_SHOPS, shops)
     }
   },
+
+  /* 
+  退出登陆的异步action
+  */
+  async logout ({commit}) {
+    // 发退出登陆的ajax请求
+    const result = await reqLogout()
+    // 成功后重置user数据
+    if (result.code===0) {
+      commit(RESET_USER)
+    }
+  } 
 }

@@ -7,12 +7,21 @@
 
 <script type="text/ecmascript-6">
   import FooterGuide from './components/FooterGuide/FooterGuide'
+  import {reqUser} from './api'
+  import {RECEIVE_USER} from './vuex/mutation-types'
+
   export default {
     name: 'App',
 
-    mounted () {
+    async mounted () {
       // 异步获取地址
       this.$store.dispatch('getAddress')
+      // 请求获取用户信息
+      const result = await reqUser()
+      if(result.code===0) {
+        const user = result.data
+        this.$store.commit(RECEIVE_USER, user)
+      }
     },
 
     components: {

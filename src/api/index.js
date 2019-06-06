@@ -27,3 +27,9 @@ export const reqSmsLogin = (phone, code) => ajax(BASE + '/login_sms', {phone, co
 
 // 6. 用户名/密码/验证码登陆
 export const reqPwdLogin = ({name, pwd, captcha}) => ajax(BASE + '/login_pwd', {name, pwd, captcha}, 'POST')
+
+// 7. 获取登陆用户的信息
+export const reqUser = () => ajax(BASE + '/userinfo')
+
+// 8. 退出登陆
+export const reqLogout = () => ajax(BASE + '/logout')
