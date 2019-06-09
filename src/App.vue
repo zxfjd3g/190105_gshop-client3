@@ -14,14 +14,6 @@
     name: 'App',
 
     async mounted () {
-      // 异步获取地址
-      this.$store.dispatch('getAddress')
-      // 请求获取用户信息
-      const result = await reqUser()
-      if(result.code===0) {
-        const user = result.data
-        this.$store.commit(RECEIVE_USER, user)
-      }
     },
 
     components: {

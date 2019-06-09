@@ -14,6 +14,8 @@ Vue.component('Header', Header)
 Vue.component('Star', Star)
 Vue.component(Button.name, Button) // mt-button
 
+// 创建vm作为全局事件总线对象: 
+Vue.prototype.$bus = new Vue()  // 所有组件对象都可以直接访问$bus
 
 /* eslint-disable no-new */
 new Vue({
