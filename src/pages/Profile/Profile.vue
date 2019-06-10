@@ -112,7 +112,9 @@
         user: {_id: 12, phone: '13712341234'}  手机号登陆
       
       */
-      ...mapState(['user'])
+      ...mapState({
+        user: state => state.user.user
+      })
     },
 
     methods: {

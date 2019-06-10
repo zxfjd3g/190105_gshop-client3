@@ -58,7 +58,11 @@
     },
 
     computed: {
-      ...mapState(['address', 'categorys']),
+      // ...mapState(['address', 'categorys']),
+      ...mapState({
+        address: state => state.msite.address,  // address的值由回调函数的返回值动态确定
+        categorys: state => state.msite.categorys
+      }),
 
       /*
       用于显示分类轮播的二维数组
