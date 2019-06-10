@@ -3,6 +3,7 @@ import MixinTest from '../pages/MixinTest/MixinTest.vue'
 import ComponentTest from '../pages/ComponentTest/ComponentTest.vue'
 import EventTest from '../pages/EventTest/EventTest.vue'
 import ReactiveTest from '../pages/ReactiveTest/ReactiveTest.vue'
+import ModelTest from '../pages/ModelTest/ModelTest.vue'
 
 export default [
   {
@@ -28,5 +29,10 @@ export default [
   {
     path: '/reactive',
     component: ReactiveTest,
+  },
+  
+  {
+    path: '/model',
+    component: ModelTest,
   },
 ]

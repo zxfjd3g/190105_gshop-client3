@@ -88,13 +88,46 @@
             index页面中的的div元素会被替换, 而不是插入其中
 
 ## 6. 组件的生命周期
-
+    1). vue的生命周期: 创建=>挂载=>更新=>销毁
+    2). vue的生命周期勾子:
+        初始化(一次): beforeCreate() => created() => beforeMount() => mounted()
+        更新(n次): beforeUpdate() => updated()
+        销毁(一次): beforeDestroy() => destroyed()
+    3). 
 ## 7. 组件间通信
 
 ## 8. Vue项目优化
+    1). 对UI组件库(如mint-ui)按需打包
+    2). 使用异步组件 ===> 路由组件懒加载: 
+        {path: '/product', component: () => import('../pages/Product.vue')}
+    4). 使用webpack-bundle-analyzer分析项目打包文件
+        命令: yarn run build --report
+        举例: moment比较大 ===> date-fns
+    5). 服务端开启 gzip压缩
+    6). 减少vender包: 
+        打包vender时不打包 vue、vuex、vue-router、axios 等，换用cdn直接引入到根目录的 index.html 中
+        <script src="//cdn.bootcss.com/vue/2.2.5/vue.min.js"></script>
+        <script src="//cdn.bootcss.com/vue-router/2.3.0/vue-router.min.js"></script>
+        <script src="//cdn.bootcss.com/vuex/2.2.1/vuex.min.js"></script>
+        <script src="//cdn.bootcss.com/axios/0.15.3/axios.min.js"></script>
+        var externals = {
+            vue: 'Vue',
+            axios: 'axios',
+            'element-ui': 'ELEMENT',
+            'vue-router': 'VueRouter',
+            vuex: 'Vuex'
+        }
+        config.externals(externals)
+
+    7). mixin减少项目冗余代码
 
 ## 9. 正向代理与反向代理
 
+
 ## 10. 使用组件标签上使用v-model
+    1). v-model的本质
+
+    2). 在自定义组件上使用v-model
+
 
 
