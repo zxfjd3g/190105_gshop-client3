@@ -61,6 +61,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import { Toast, MessageBox } from 'mint-ui'
   import { setInterval, clearInterval } from 'timers'
   import {reqSendCode, reqSmsLogin, reqPwdLogin} from '../../api'
   import {RECEIVE_USER} from '../../vuex/mutation-types'
@@ -104,11 +105,13 @@
         // 请求发送验证码
         const result = await reqSendCode(this.phone)
         if (result.code===0) {
-          alert('短信发送成功')
+          // alert('短信发送成功')
+          Toast('短信发送成功');
         } else {
           // 停止计时
           this.computeTime = 0
-          alert(result.msg)
+          // alert(result.msg)
+          MessageBox.alert(result.msg)
         }
       },
 

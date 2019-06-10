@@ -33,3 +33,19 @@ export const reqUser = () => ajax(BASE + '/userinfo')
 
 // 8. 退出登陆
 export const reqLogout = () => ajax(BASE + '/logout')
+
+
+/**
+ * 获取商家信息
+ */
+export const reqInfo = () => ajax('/info')
+
+/**
+ * 获取商家评价数组
+ */
+export const reqRatings = () => ajax('/ratings')
+
+/**
+ * 获取商家商品数组
+ */
+export const reqGoods = () => ajax('/goods')

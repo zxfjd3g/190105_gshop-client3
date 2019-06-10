@@ -5,14 +5,20 @@ import {
   reqAddress,
   reqCategorys,
   reqShops,
-  reqLogout
+  reqLogout,
+  reqGoods,
+  reqRatings,
+  reqInfo
 } from '../api'
 
 import {
   RECEIVE_ADDRESS,
   RECEIVE_CATEGORYS,
   RECEIVE_SHOPS,
-  RESET_USER
+  RESET_USER,
+  RECEIVE_INFO,
+  RECEIVE_GOODS,
+  RECEIVE_RATINGS
 } from './mutation-types'
 
 export default {
@@ -71,5 +77,44 @@ export default {
     if (result.code===0) {
       commit(RESET_USER)
     }
-  } 
+  },
+
+  /* 
+  获取商家信息的异步action
+  */
+  async getInfo ({commit}) {
+    // 发送异步ajax请求
+    const result = await reqInfo()
+    // 成功后,提交mutation去更新状态数据
+    if (result.code===0) {
+      const info = result.data
+      commit(RECEIVE_INFO, {info})
+    }
+  },
+
+  /* 
+  获取商品列表的异步action
+  */
+  async getGoods ({commit}) {
+    // 发送异步ajax请求
+    const result = await reqGoods()
+    // 成功后,提交mutation去更新状态数据
+    if (result.code===0) {
+      const goods = result.data
+      commit(RECEIVE_GOODS, {goods})
+    }
+  },
+
+  /* 
+  获取评价列表的异步action
+  */
+  async getRatings ({commit}) {
+    // 发送异步ajax请求
+    const result = await reqRatings()
+    // 成功后,提交mutation去更新状态数据
+    if (result.code===0) {
+      const ratings = result.data
+      commit(RECEIVE_RATINGS, {ratings})
+    }
+  }
 }

@@ -196,3 +196,58 @@
         json数组 <----> js数组
         js对象/数组 = JSON.parse(json对象/数组)
         json对象/数组 = JSON.stringfy(js对象/数组)
+
+# day04
+## 1. mockjs的理解和使用
+    是什么: 用来提供mock数据接口的js库
+    作用: 拦截ajax请求, 返回根据指定结构生成的随机数据
+    使用: Mock.mock(url, template)
+
+## 2. vuex的多模块编码
+    1). 为什么vuex要有多模块
+        对中大型项目来说, 需要管理的状态数据较多, 不进行多模块方式拆分, mutations/actions模块会比较臃肿
+        而一旦将不同模块的数据分别拆分并管理, 再多的状态也不会有此问题
+    2). 设计多个模块
+        msite
+        user
+        shop
+    3). 每个模块的结构
+        export default {
+            state,
+            mutations,
+            actions,
+            getters
+        }
+    4). 将state, mutations, actions, getters拆分到各个模块中
+        每个模块中的mutations/actions/getters只能操作当前模块的state数据
+        不同模块的mutation可以相同, 但actions和getters不要相同
+    5). vuex管理的state结构
+        {
+          mudule1: {},
+          mudule2: {},
+          mudule3: {},
+        }
+    6). 配置:
+        new Vuex.Store({
+            mutations, // 能看到总状态数据, 能更新任意模块状态数据
+            actions, // 能看到总状态数据, 能触发任意mutation调用
+            getters, // 基于任意模块状态数据的计算属性
+            modules: {
+              module1,
+              module2
+            }
+        })
+    7). 在组件中与vuex通信
+        读取state数据: ...mapState({user: state => state.user.user})
+        读取getter数据: ...mapGetters(['totalShopCount'])
+        更新状态数据: this.$store.dispatch('actionName')   this.$store.commit('mutationName')    
+    
+    8). 多个action或mutation同名的问题
+        组件中:
+            store.dispatch(): 所有匹配的action调用
+            store.commit(): 所有匹配的mutation调用
+        action(全局/局部)中
+            commit(): 所有匹配的mutation调用
+        调用顺序
+            先全局, 再局部
+            多个局部根据配置的先后
