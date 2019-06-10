@@ -4,8 +4,8 @@
       <div class="menu-wrapper">
         <ul>
           <!-- current -->
-          <li class="menu-item" v-for="(good, index) in goods" :key="good.name"
-            @click="clickItem">
+          <li class="menu-item" v-for="(good, index) in goods" 
+            :key="good.name" @click="clickItem" :class="{current: index===currentIndex}">
             <span class="text bottom-border-1px">
               <img class="icon" v-if="good.icon" :src="good.icon">
               {{good.name}}
@@ -14,7 +14,7 @@
         </ul>
       </div>
       <div class="foods-wrapper">
-        <ul>
+        <ul ref="rightUl">
           <li class="food-list-hook" v-for="good in goods" :key="good.name">
             <h1 class="title">{{good.name}}</h1>
             <ul>
@@ -50,6 +50,14 @@
   import {mapState} from 'vuex'
   export default {
     name: "Goods",
+
+    data () {
+      return {
+        scrollY: 0, // 右侧列表滚动的y轴坐标, 初始值为0, 滚动时实时更新
+        tops: [], // 右侧分类的li的top组成的数组, 初始值为[], 列表显示后立即统计并更新tops
+      }
+    },
+
     async mounted () {
       await this.$store.dispatch("getGoods")
       /* 
@@ -57,26 +65,93 @@
       2. callbak + $nextTick()
       3. 利用dispatch返回的promise
       */
-      new BScroll('.menu-wrapper', {
-        click: true, // better-scroll 默认会阻止浏览器的原生 click 事件。当设置为 true，better-scroll 会派发一个 click 事件
-      })
-      new BScroll('.foods-wrapper', {
-        click: true, 
-      })
+      this._initScroll()
+      this._initTops()
+
     },
 
     computed: {
       ...mapState({
         goods: state => state.shop.goods
-      })
+      }),
+
+      /* 
+      当前分类的下标
+      */
+     currentIndex () {
+       const {scrollY, tops} = this
+       return tops.findIndex((top, index) => scrollY>=top && scrollY<tops[index+1])
+     }
     },
 
     methods: {
       clickItem () {
         alert('----')
+      },
+
+      // 初始化滚动
+      _initScroll () {
+        new BScroll('.menu-wrapper', {
+          click: true, // better-scroll 默认会阻止浏览器的原生 click 事件。当设置为 true，better-scroll 会派发一个 click 事件
+        })
+        /* 
+        1. 如何触发滑动
+          触摸
+          惯性
+          编码
+        2. 分发事件的频率
+          实时: 间隔时间非常小
+          非实时: 间隔时间较大
+        
+        */
+        const rightScroll = new BScroll('.foods-wrapper', {
+          click: true, 
+          probeType: 1, // 非实时, 触摸
+          // probeType: 2, // 实时, 触摸
+          // probeType: 3, // 实时  触摸/惯性/编码
+        })
+
+        // 绑定滚动的事件监听
+        rightScroll.on('scroll', ({x, y}) => {
+          console.log('scroll', x, y)
+          this.scrollY = Math.abs(y)
+        })
+        // 绑定滚动结束的事件监听
+        rightScroll.on('scrollEnd', ({x, y}) => {
+          console.log('scrollEnd', x, y)
+          this.scrollY = Math.abs(y)
+        })
+      },
+
+      // 初始化统计tops
+      _initTops () {
+        const tops = []
+        let top = 0
+        tops.push(top)
+        // 得到所有右侧分类li
+        const lis = this.$refs.rightUl.children
+        Array.prototype.slice.call(lis).forEach(li => {
+          top += li.clientHeight
+          tops.push(top)
+        })
+
+        console.log('tops', tops)
+        this.tops = tops
       }
     }
   }
+
+  /* 
+  1. 滑动右侧列表, 左侧当前分类项目变化
+    1). 设计一个计算属性currentIndex: 当前分类的下标
+    2). 相关的数据
+        a. scrollY: 右侧列表滚动的y轴坐标, 初始值为0, 滚动时实时更新
+        b. tops: 右侧分类的li的top组成的数组, 初始值为[], 列表显示后立即统计并更新tops
+
+
+2. 点击左侧分类项, 右侧列表滑动到对应的位置
+
+  */
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
