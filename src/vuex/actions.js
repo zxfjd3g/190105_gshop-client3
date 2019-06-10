@@ -5,6 +5,6 @@
 
 export default {
   xxx ({commit, state}) { // state是总state
-
+    console.log('总action xxx()')
   }
 }

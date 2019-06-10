@@ -75,6 +75,12 @@ const actions = {
       commit(RECEIVE_SHOPS, shops)
     }
   },
+
+  xxx ({commit, state}) { // state是总state
+    console.log('msite action xxx()')
+    commit('yyy')
+  },
+
 }
 const getters = {}
 

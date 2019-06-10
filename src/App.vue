@@ -14,6 +14,10 @@
     name: 'App',
 
     async mounted () {
+
+      // this.$store.dispatch('xxx') // 触发所有对应action调用
+      // this.$store.commit('yyy') // 触发所有对应的mutation调用
+
       // 异步获取地址
       this.$store.dispatch('getAddress')
       // 请求获取用户信息
