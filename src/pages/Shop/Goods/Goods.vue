@@ -92,6 +92,7 @@
         // 一旦当前分类变化了, 让左侧列表滑动到当前分类处
         if (this.index!==index && this.leftScroll) {
           // 保存最新的
+          // eslint-disable-next-line 
           this.index = index
           const li = this.$refs.leftUl.children[index]
           this.leftScroll.scrollToElement(li, 500)
