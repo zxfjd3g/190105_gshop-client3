@@ -18,7 +18,8 @@
           <li class="food-list-hook" v-for="good in goods" :key="good.name">
             <h1 class="title">{{good.name}}</h1>
             <ul>
-              <li class="food-item bottom-border-1px" v-for="food in good.foods" :key="food.name">
+              <li class="food-item bottom-border-1px" v-for="food in good.foods" 
+                :key="food.name" @click="showFood(food)">
                 <div class="icon">
                   <img width="57" height="57" :src="food.icon">
                 </div>
@@ -41,13 +42,19 @@
           </li>
         </ul>
       </div>
+
+      <ShopCart/>
     </div>
+    <Food :food="food" ref="food"/>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll'
   import {mapState} from 'vuex'
+  import Food from './Food'
+  import ShopCart from './ShopCart'
+
   export default {
     name: "Goods",
 
@@ -55,6 +62,7 @@
       return {
         scrollY: 0, // 右侧列表滚动的y轴坐标, 初始值为0, 滚动时实时更新
         tops: [], // 右侧分类的li的top组成的数组, 初始值为[], 列表显示后立即统计并更新tops
+        food: {}, // 需要显示的food
       }
     },
 
@@ -155,7 +163,25 @@
 
         console.log('tops', tops)
         this.tops = tops
+      },
+
+      /* 
+      显示food界面
+      通过ref可以得到原生DOM对象/组件对象
+      父组件调用子组件的方法?  通过ref
+      子组件调用父组件的方法?  传递函数类型的props
+      */
+      showFood (food) {
+        // 更新food数据
+        this.food = food
+        // 显示food组件界面
+        this.$refs.food.toggle()
       }
+    },
+
+    components: {
+      Food,
+      ShopCart
     }
   }
 
