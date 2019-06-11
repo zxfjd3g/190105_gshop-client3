@@ -2,10 +2,10 @@
   <div>
     <div class="goods">
       <div class="menu-wrapper">
-        <ul>
+        <ul ref="leftUl">
           <!-- current -->
           <li class="menu-item" v-for="(good, index) in goods" 
-            :key="good.name" @click="clickItem" :class="{current: index===currentIndex}">
+            :key="good.name" @click="clickItem(index)" :class="{current: index===currentIndex}">
             <span class="text bottom-border-1px">
               <img class="icon" v-if="good.icon" :src="good.icon">
               {{good.name}}
@@ -78,20 +78,38 @@
       /* 
       当前分类的下标
       */
-     currentIndex () {
-       const {scrollY, tops} = this
-       return tops.findIndex((top, index) => scrollY>=top && scrollY<tops[index+1])
-     }
+      currentIndex () {
+        const {scrollY, tops} = this
+        const index = tops.findIndex((top, index) => scrollY>=top && scrollY<tops[index+1])
+        // 一旦当前分类变化了, 让左侧列表滑动到当前分类处
+        if (this.index!==index && this.leftScroll) {
+          // 保存最新的
+          this.index = index
+          const li = this.$refs.leftUl.children[index]
+          this.leftScroll.scrollToElement(li, 500)
+        }
+        
+
+
+        return index
+      }
     },
 
     methods: {
-      clickItem () {
-        alert('----')
+      clickItem (index) {
+        // 得到对应的top
+        const top = this.tops[index]
+
+        // 立即更新scrollY
+        this.scrollY = top
+        
+        // 让右侧列表滑动到对应的位置
+        this.rightScroll.scrollTo(0, -top, 500)
       },
 
       // 初始化滚动
       _initScroll () {
-        new BScroll('.menu-wrapper', {
+        this.leftScroll = new BScroll('.menu-wrapper', {
           click: true, // better-scroll 默认会阻止浏览器的原生 click 事件。当设置为 true，better-scroll 会派发一个 click 事件
         })
         /* 
@@ -104,7 +122,7 @@
           非实时: 间隔时间较大
         
         */
-        const rightScroll = new BScroll('.foods-wrapper', {
+        this.rightScroll = new BScroll('.foods-wrapper', {
           click: true, 
           probeType: 1, // 非实时, 触摸
           // probeType: 2, // 实时, 触摸
@@ -112,12 +130,12 @@
         })
 
         // 绑定滚动的事件监听
-        rightScroll.on('scroll', ({x, y}) => {
+        this.rightScroll.on('scroll', ({x, y}) => {
           console.log('scroll', x, y)
           this.scrollY = Math.abs(y)
         })
         // 绑定滚动结束的事件监听
-        rightScroll.on('scrollEnd', ({x, y}) => {
+        this.rightScroll.on('scrollEnd', ({x, y}) => {
           console.log('scrollEnd', x, y)
           this.scrollY = Math.abs(y)
         })

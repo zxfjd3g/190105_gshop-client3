@@ -281,7 +281,7 @@
     创建BScroll对象的时机
       watch + $nextTick()
       callback + $nextTick()
-      利用
+      利用dispatch()返回的promise
     better-scroll禁用了原生的dom事件, 使用的是自定义事件
     
 ### 2). 滑动右侧列表, 左侧的当前分类会变化
@@ -308,6 +308,6 @@
     3). 立即更新scrollY
 
 ### 4). 如何保证当前分类项总是可见?
-    一旦当前分类变化了, 让左侧列表滑动当前分类处
+    一旦当前分类变化了, 让左侧列表滑动到当前分类处
     如何判断变化了?
     scroll.scrollToElement(li)
