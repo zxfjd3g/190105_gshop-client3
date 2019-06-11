@@ -1,6 +1,7 @@
 /*
 管理商家模块相关状态数据的模块
 */
+import Vue from "vue";
 import {
   reqGoods,
   reqRatings,
@@ -9,7 +10,9 @@ import {
 import {
   RECEIVE_INFO,
   RECEIVE_GOODS,
-  RECEIVE_RATINGS
+  RECEIVE_RATINGS,
+  ADD_FOOD_COUNT,
+  REDUCE_FOOD_COUNT
 } from '../mutation-types'
 
 
@@ -29,6 +32,28 @@ const mutations = {
 
   [RECEIVE_GOODS](state, {goods}) {
     state.goods = goods
+  },
+
+  /* 
+  给一个响应式对象添加一个新的属性, 没有数据绑定
+
+  */
+  [ADD_FOOD_COUNT](state, {food}) {
+    if (!food.count) { // 第一次
+      // food.count = 1  // 给food添加一个新的属性
+      // food.name = "xxx"
+      // 为响应式对象添加一个属性，确保新属性也是响应式的，并且能够触发视图更新
+      Vue.set(food, 'count', 1)
+    } else {
+      food.count++
+    }
+  },
+
+  [REDUCE_FOOD_COUNT](state, {food}) {
+    if (food.count>0) {
+      food.count--
+    }
+    
   },
 }
 const actions = {
@@ -68,6 +93,17 @@ const actions = {
     if (result.code===0) {
       const ratings = result.data
       commit(RECEIVE_RATINGS, {ratings})
+    }
+  },
+
+  /* 
+  更新指定food的数量
+  */
+  updateFoodCount ({commit}, {isAdd, food}) {
+    if (isAdd) { // 增加
+      commit(ADD_FOOD_COUNT, {food})
+    } else { // 减少
+      commit(REDUCE_FOOD_COUNT, {food})
     }
   }
 }
