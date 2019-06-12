@@ -6,6 +6,7 @@
     <span>{{name2}}</span>
     <hr>
     <MyInput v-model="name3"/><span>{{name3}}</span>
+    <MyInput :value="name4" @input="name4 = $event"/><span>{{name4}}</span>
   </div>
 </template>
 
@@ -16,7 +17,8 @@
       return {
         name: 'tom',
         name2: 'Jack',
-        name3: 'Bob'
+        name3: 'Bob',
+        name4: 'Cat'
       }
     },
 

@@ -88,23 +88,33 @@
             index页面中的的div元素会被替换, 而不是插入其中
 
 ## 6. 组件的生命周期
+
+![](file:///C:/Users/Fei/Documents/My%20Knowledge/temp/3d32279e-d65b-46dc-8e1b-eee2764af93c/128/index_files/7.%20vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F1.png)
+
     1). vue的生命周期: 创建=>挂载=>更新=>销毁
     2). vue的生命周期勾子:
         初始化(一次): beforeCreate() => created() => beforeMount() => mounted()
         更新(n次): beforeUpdate() => updated()
         销毁(一次): beforeDestroy() => destroyed()
-    3). 
-## 7. 组件间通信
+    3). 一些细节
+		beforeCreate(): 在实例初始化之后，立即同步调用，在数据观察(data observer)和 event/watcher 配置之前被调用。
+		create(): 可以读取或修改data中的数据, 已经完成数据观察(data observer)和 event/watcher 配置
+		beforeMount(): 模板已经在内存中编译, 但还没有挂载到页面上, 不能通过ref找到对应的标签
+		mounted(): 页面已经初始显示, 可以通过ref找到对应的标签
+		beforeUpdate(): 在数据更新之后, 界面更新前调用, 只能访问到原有的界面
+		updated(): 在界面更新之后调用, 此时可以访问最新的界面
+		beforeDestroy(): 实例销毁之前调用, 此时实例仍然完全可用。
+		destroyed(): Vue 实例销毁后调用, 数据绑定/事件监听器都没了, 但dom结构还在
 
-## 8. Vue项目优化
-    1). 对UI组件库(如mint-ui)按需打包
+## 7. Vue项目优化
+    1). 对UI组件库(如mint-ui/element-ui)按需打包
     2). 使用异步组件 ===> 路由组件懒加载: 
         {path: '/product', component: () => import('../pages/Product.vue')}
     4). 使用webpack-bundle-analyzer分析项目打包文件
         命令: yarn run build --report
         举例: moment比较大 ===> date-fns
     5). 服务端开启 gzip压缩
-    6). 减少vender包: 
+    6). 减小vender包: 
         打包vender时不打包 vue、vuex、vue-router、axios 等，换用cdn直接引入到根目录的 index.html 中
         <script src="//cdn.bootcss.com/vue/2.2.5/vue.min.js"></script>
         <script src="//cdn.bootcss.com/vue-router/2.3.0/vue-router.min.js"></script>
@@ -121,13 +131,29 @@
 
     7). mixin减少项目冗余代码
 
-## 9. 正向代理与反向代理
+## 8. 正向代理与反向代理
+![](https://user-gold-cdn.xitu.io/2019/1/3/16813f90387855c0?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+    
+	1). 正向代理
+        代理客户端
+        隐藏真实的客户，为客户端收发请求，使真实客户端对服务器不可见;
+        一个局域网内的所有用户可能被一台服务器做了正向代理，由该台服务器负责 HTTP 请求;
+        例子: http-proxy-middleware / 翻墙软件
+    2). 反向代理
+        代理服务器;
+        隐藏了真实的服务器，为服务器收发请求，使真实服务器对客户端不可见;
+        例子: Nginx 服务器
 
 
-## 10. 使用组件标签上使用v-model
+## 9. 使用组件标签上使用v-model
     1). v-model的本质
-
+        <input v-model="name">
+        <input :value="name" @input="name = $event.target.value">
     2). 在自定义组件上使用v-model
+        <MyInput v-model="name">
+        MyInput.vue
+            props: ['value']
+            <input :value='value' @input="$emit('input', $event.target.value)">
 
 
 
