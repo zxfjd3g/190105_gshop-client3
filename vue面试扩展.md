@@ -1,6 +1,6 @@
 ## 1. slot/插槽
     1). 插槽的作用:
-        向子组件传递数据或者标签
+        父组件向子组件传递标签结构(也可以是数据)
         通过标签体传递, 而不再是标签属性
     2). slot的分类
         普通插槽(slot)
@@ -9,7 +9,9 @@
     3). 区别
         普通插槽: 子组件只能有一个插槽, 标签体内容在父组件中解析好后(数据在父组件), 传递给这个插槽
         命名插槽: 子组件有多个指定了name的插槽, 标签体内容在父组件中解析好后(数据在父组件), 分别传递给对应的插槽
-        作用域插槽: 数据在子组件, 子组件需要将数据传递给父组件, 父组件根据接收的数据渲染好标签体内容后, 传递给子组件
+        作用域插槽: 数据在子组件, 子组件有部分结构需要父组件传递, 但父组件需要读取子组件数据
+                    子组件需要先向父组件传递数据, 父组件根据数据渲染标签结构后传递给子组件的插槽
+        需求: todo列表组件: 根据内部的todos数据显示todo列表, 但列表项的样式由使用者决定
 
 ## 2. mixin/混合
     1). 作用:
@@ -61,7 +63,17 @@
             分发事件/传递数据的组件: this.$bus.$emit('eventName', data)
             处理事件/接收数据的组件: this.$bus.$on('eventName', (data) => {})
 
-## 5. vue的响应式原理
+## 5. 使用组件标签上使用v-model
+    1). v-model的本质
+        <input v-model="name">
+        <input :value="name" @input="name = $event.target.value">
+    2). 在自定义组件上使用v-model
+        <MyInput v-model="name">
+        MyInput.vue
+            props: ['value']
+            <input :value='value' @input="$emit('input', $event.target.value)">
+
+## 6. vue的响应式原理
     1). 关注点有哪些?
         vue的数据绑定效果: 组件更新data数据后, 当前组件及相关的子组件都会更新相应的节点
         如何知道数据变化了?
@@ -86,8 +98,11 @@
             整体应用界面的根标签不是<App>, 而是<Root>, 
             <Root>对应的是vm
             index页面中的的div元素会被替换, 而不是插入其中
+        组件的data配置不能是对象?
+            组件会被多次使用, 每次使用都会读取data配置值, 如果是对象, 那就会共用一个data对象
+            而函数就没有问题, 因为每次调用函数返回一个新的data对象
 
-## 6. 组件的生命周期
+## 7. 组件的生命周期
 
 ![](file:///C:/Users/Fei/Documents/My%20Knowledge/temp/3d32279e-d65b-46dc-8e1b-eee2764af93c/128/index_files/7.%20vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F1.png)
 
@@ -106,31 +121,6 @@
 		beforeDestroy(): 实例销毁之前调用, 此时实例仍然完全可用。
 		destroyed(): Vue 实例销毁后调用, 数据绑定/事件监听器都没了, 但dom结构还在
 
-## 7. Vue项目优化
-    1). 对UI组件库(如mint-ui/element-ui)按需打包
-    2). 使用异步组件 ===> 路由组件懒加载: 
-        {path: '/product', component: () => import('../pages/Product.vue')}
-    4). 使用webpack-bundle-analyzer分析项目打包文件
-        命令: yarn run build --report
-        举例: moment比较大 ===> date-fns
-    5). 服务端开启 gzip压缩
-    6). 减小vender包: 
-        打包vender时不打包 vue、vuex、vue-router、axios 等，换用cdn直接引入到根目录的 index.html 中
-        <script src="//cdn.bootcss.com/vue/2.2.5/vue.min.js"></script>
-        <script src="//cdn.bootcss.com/vue-router/2.3.0/vue-router.min.js"></script>
-        <script src="//cdn.bootcss.com/vuex/2.2.1/vuex.min.js"></script>
-        <script src="//cdn.bootcss.com/axios/0.15.3/axios.min.js"></script>
-        var externals = {
-            vue: 'Vue',
-            axios: 'axios',
-            'element-ui': 'ELEMENT',
-            'vue-router': 'VueRouter',
-            vuex: 'Vuex'
-        }
-        config.externals(externals)
-
-    7). mixin减少项目冗余代码
-
 ## 8. 正向代理与反向代理
 ![](https://user-gold-cdn.xitu.io/2019/1/3/16813f90387855c0?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
     
@@ -145,15 +135,7 @@
         例子: Nginx 服务器
 
 
-## 9. 使用组件标签上使用v-model
-    1). v-model的本质
-        <input v-model="name">
-        <input :value="name" @input="name = $event.target.value">
-    2). 在自定义组件上使用v-model
-        <MyInput v-model="name">
-        MyInput.vue
-            props: ['value']
-            <input :value='value' @input="$emit('input', $event.target.value)">
+
 
 
 

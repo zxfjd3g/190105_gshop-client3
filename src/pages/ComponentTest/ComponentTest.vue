@@ -21,6 +21,7 @@
   import DynamicComponent1 from './DynamicComponent'
   import DynamicComponent2 from './DynamicComponent2'
 
+  // 定义全局组件为一个异步工厂函数
   Vue.component('async-component', function (resolve, reject) {
     setTimeout(function () {
       // 将组件定义对象(component definition)传递给 resolve 回调函数

@@ -1,7 +1,7 @@
 <template>
   <ul>
     <li v-for="(todo, index) in todos" :key="index">
-      <slot :todo="todo">xxxxx</slot>
+      <slot :todo="todo">{{todo.text}}</slot>
     </li>
   </ul>
 </template>
@@ -11,9 +11,9 @@
     data () {
       return {
         todos: [
-          {title: '吃饭', isComplete: false},
-          {title: '吃饭2', isComplete: true},
-          {title: '吃饭3', isComplete: false},
+          {text: '吃饭1', isComplete: false},
+          {text: '吃饭2', isComplete: true},
+          {text: '吃饭3', isComplete: false},
         ]
       }
     }

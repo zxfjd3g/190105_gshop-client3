@@ -21,16 +21,19 @@
     </Slot2>
 
     <h1>3. 作用域插槽(scoped slots)</h1>
+
     <Slot3>
-      <template slot-scope="slotProps2">
-        {{ slotProps2.todo.title }}
-        <span v-if="slotProps2.todo.isComplete">✓</span>
+      <template slot-scope="slotProps">
+        <span v-if="slotProps.todo.isComplete">
+          {{ slotProps.todo.text }}
+           ✓
+        </span>
       </template>
     </Slot3>
+
     <Slot3>
       <template slot-scope="{todo}">
-        <span v-if="todo.isComplete">✓</span>
-        <span style="color: red">{{ todo.title }}</span>
+        <span v-if="todo.isComplete" style="color: red">{{ todo.text }}</span>
       </template>
     </Slot3>
 
@@ -45,7 +48,7 @@
     name: 'SlotTest',
     data () {
       return {
-        msg: '向插槽传标签内容'
+        msg: 'atguigu'
       }
     },
     components: {

@@ -1,6 +1,9 @@
 <template>
   <div>
-    <h1 @click="test1">EventTest组件</h1>
+    <h1>EventTest组件</h1>
+    <button @click="test1">测试原生事件</button>
+
+    <hr>
     <Event1 @click.native="test2"/>
 
     <hr>
@@ -22,6 +25,7 @@
       test2 () {
         alert('test2()')
       },
+     
       test3 (data) {
         alert('click test3()  ' + data )
       },

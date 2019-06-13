@@ -2,9 +2,12 @@
   <div>
     <input type="text" v-model="name"> 
     <span>{{name}}</span>
+    <br>
     <input type="text" :value="name2" @input="name2=$event.target.value">
     <span>{{name2}}</span>
+
     <hr>
+
     <MyInput v-model="name3"/><span>{{name3}}</span>
     <MyInput :value="name4" @input="name4 = $event"/><span>{{name4}}</span>
   </div>
