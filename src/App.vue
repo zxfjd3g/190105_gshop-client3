@@ -13,6 +13,12 @@
   export default {
     name: 'App',
 
+    data () {
+      return {
+        m: 1
+      }
+    },
+
     async mounted () {
     },
 
@@ -20,6 +26,7 @@
       FooterGuide
     }
   }
+
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>

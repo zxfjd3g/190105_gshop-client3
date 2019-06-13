@@ -113,7 +113,7 @@
         销毁(一次): beforeDestroy() => destroyed()
     3). 一些细节
 		beforeCreate(): 在实例初始化之后，立即同步调用，在数据观察(data observer)和 event/watcher 配置之前被调用。
-		create(): 可以读取或修改data中的数据, 已经完成数据观察(data observer)和 event/watcher 配置
+		created(): 可以读取或修改data中的数据, 已经完成数据观察(data observer)和 event/watcher 配置
 		beforeMount(): 模板已经在内存中编译, 但还没有挂载到页面上, 不能通过ref找到对应的标签
 		mounted(): 页面已经初始显示, 可以通过ref找到对应的标签
 		beforeUpdate(): 在数据更新之后, 界面更新前调用, 只能访问到原有的界面
