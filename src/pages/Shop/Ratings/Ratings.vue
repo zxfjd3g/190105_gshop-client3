@@ -78,15 +78,17 @@
       }
     },
 
-    mounted () {
-
-      new BScroll('.ratings', {
-        click: true
-      })
+    async mounted () {
 
       // 绑定自定义监听
       this.$eventBus.$on('setSelectType', this.setSelectType)
       this.$eventBus.$on('toggleOnlyText', this.toggleOnlyText)
+
+      await this.$store.dispatch('getRatings')
+
+      new BScroll('.ratings', {
+        click: true
+      })
     },
 
     computed: {

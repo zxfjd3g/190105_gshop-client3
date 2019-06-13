@@ -92,6 +92,7 @@
       listShow () {
         // 如果当前总数量为0, 直接不显示
         if (this.totalCount===0) {
+          // eslint-disable-next-line
           this.isShow = false
           return false
         }
@@ -105,6 +106,7 @@
             2. 在创建后: 保存
             */
             if (!this.scroll) {
+              // eslint-disable-next-line
               this.scroll = new BScroll('.list-content', {
                 click: true
               })

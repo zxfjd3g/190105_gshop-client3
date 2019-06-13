@@ -7,6 +7,13 @@ import Shop from '../pages/Shop/Shop.vue'
 import Goods from '../pages/Shop/Goods/Goods.vue'
 import Ratings from '../pages/Shop/Ratings/Ratings.vue'
 import Info from '../pages/Shop/Info/Info.vue'
+import NotFound from '../pages/NotFound/NotFound.vue'
+
+import A from '../pages/test/A.vue'
+import B from '../pages/test/B.vue'
+import B1 from '../pages/test/B1.vue'
+import B2 from '../pages/test/B2.vue'
+
 
 export default [
   {
@@ -61,6 +68,23 @@ export default [
         path: '/shop',
         redirect: '/shop/goods'
       }
+    ]
+  },
+
+  {
+    path: '/a',
+    component: A
+  }, {
+    path: '/b',
+    component: B,
+    children: [{
+        path: '/b/b1',
+        component: B1
+      },
+      {
+        path: '/b/b2',
+        component: B2
+      },
     ]
   },
 
