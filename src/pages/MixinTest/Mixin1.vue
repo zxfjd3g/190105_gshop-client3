@@ -10,9 +10,16 @@
   import {myMixin} from './mixins'
   export default {
     mixins: [myMixin],
+
     data () {
       return {
         b: 'bbbbbb'
+      }
+    },
+    
+    computed: {
+      test () {
+        
       }
     }
   }

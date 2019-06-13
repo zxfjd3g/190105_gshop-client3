@@ -4,9 +4,14 @@ export const myMixin = {
       a: 'a111',
     }
   },
+
   computed: {
     length() {
       return this.a.length
     }
   }
+}
+
+export const otherMixin = {
+
 }

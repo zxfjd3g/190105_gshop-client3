@@ -8,13 +8,12 @@
 
 <script type="text/ecmascript-6">
   import {myMixin} from './mixins'
-
   export default {
     mixins: [myMixin],
     data () {
       return {
-        c: 'ccccc',
-        a: 'a222222'
+        c: 'c1111',
+        a: 'a3333'
       }
     }
   }

@@ -2,38 +2,35 @@
   <div>
     <h1>1. 普通插槽</h1>
     <Slot1>
-      <h2>{{msg}}</h2>
-      abcd
-    </Slot1>
-    <Slot1>
-      <a href="http://www.atguigu.com">去学习</a>
+      <h3>{{msg}}</h3>
+      abc
     </Slot1>
 
     <h1>2. 命名插槽(named slot)</h1>
     <Slot2>
       <h1 slot="two">{{msg}}</h1>
       <h2 slot="one">{{msg}}</h2>
+      <h3>xxxx</h3>
     </Slot2>
-
+    <hr>
     <Slot2>
-      <a slot="two" href="http://www.atguigu.com">去学习</a>
-      <a slot="one" href="http://www.atguigu.com">去百度</a>
+      <p slot="two">{{msg}}</p>
+      <p slot="one">{{msg}}</p>
     </Slot2>
 
     <h1>3. 作用域插槽(scoped slots)</h1>
 
     <Slot3>
+      <!-- 
+        父组件中通过slot-scope接收数据, 属性值是包含数据的对象
+       -->
       <template slot-scope="slotProps">
-        <span v-if="slotProps.todo.isComplete">
-          {{ slotProps.todo.text }}
-           ✓
-        </span>
+        <span v-if="slotProps.todo.isComplete">{{slotProps.todo.text}}✓</span>
       </template>
     </Slot3>
-
     <Slot3>
-      <template slot-scope="{todo}">
-        <span v-if="todo.isComplete" style="color: red">{{ todo.text }}</span>
+      <template slot-scope="slotProps">
+        <span v-if="slotProps.todo.isComplete" style="color: red">{{slotProps.todo.text}}</span>
       </template>
     </Slot3>
 
