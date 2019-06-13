@@ -15,6 +15,9 @@ import './filters'
 
 Vue.config.productionTip = false
 
+// 将store保存Vue函数对象
+Vue.store = store
+
 Vue.use(VueLazyload, {  // 内部自定义了全局指令: lazy
   loading,
 })
