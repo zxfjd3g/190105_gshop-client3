@@ -17,6 +17,7 @@ Vue.component('Star', Star)
 Vue.component('CartControl', CartControl)
 Vue.component(Button.name, Button) // mt-button
 
+Vue.prototype.$eventBus = new Vue()
 
 /* eslint-disable no-new */
 new Vue({
